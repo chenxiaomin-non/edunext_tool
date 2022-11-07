@@ -65,7 +65,11 @@ def get_comment_of_question(activityId: str, groupId: str, sessionId: str, hasCo
                     for card in c['Cards']:
                         if card['IsVoted'] is True:
                             if card['CardValue'] < max_point:
-                                vote_comment(c, sessionId, card['CardValue'], True)
+                                try:
+                                    vote_comment(c, sessionId, card['CardValue'], True)
+                                except Exception:
+                                    print('\t\t- Stupid error occur! Or Finished Question!')
+                                    return
                                 print('\t\t- Unvoted for', edu_header.group_mate_dict[c['Creator']], card['CardValue'], '⭐')
                                 break
                             is_voted = True
@@ -73,13 +77,21 @@ def get_comment_of_question(activityId: str, groupId: str, sessionId: str, hasCo
                             break
                     if is_voted is False:
                         if remain_card[max_point-1] != 0:
-                            vote_comment(c, sessionId, max_point)
+                            try:
+                                vote_comment(c, sessionId, max_point)
+                            except Exception:
+                                print('\t\t- Stupid error occur! Or Finished Question!')
+                                return
                             remain_card[max_point-1] -= 1
                             print('\t\t- Voted for', edu_header.group_mate_dict[c['Creator']], max_point, '⭐')
                         else:
                             max_point -= 1
                             remain_card[max_point-1] -= 1
-                            vote_comment(c, sessionId, max_point)
+                            try:
+                                vote_comment(c, sessionId, max_point)
+                            except Exception:
+                                print('\t\t- Stupid error occur! Or Finished Question!')
+                                return
                             print('\t\t- Voted for', edu_header.group_mate_dict[c['Creator']], max_point, '⭐')
 
 
